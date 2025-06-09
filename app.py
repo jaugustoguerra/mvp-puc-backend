@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sqlite3
 from models import criar_tabela
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -18,12 +19,21 @@ def home():
 @app.route('/cadastrar_aluno', methods=['POST'])
 def cadastrar_aluno():
     data = request.json
+
+    # Converte de 'YYYY-MM-DD' para 'DD/MM/YYYY'
+    data_nascimento_iso = data['data_nascimento']
+    try:
+        data_nascimento_br = datetime.strptime(data_nascimento_iso, '%Y-%m-%d').strftime('%d/%m/%Y')
+    except ValueError:
+        return jsonify({'erro': 'Data inválida. Use o formato YYYY-MM-DD.'}), 400
+
     con = sqlite3.connect(DB)
     cur = con.cursor()
     cur.execute("INSERT INTO alunos (nome, email, data_nascimento) VALUES (?, ?, ?)",
-                (data['nome'], data['email'], data['data_nascimento']))
+                (data['nome'], data['email'], data_nascimento_br))
     con.commit()
     con.close()
+
     return jsonify({'mensagem': 'Aluno cadastrado com sucesso'}), 201
 
 @app.route('/buscar_alunos', methods=['GET'])
