@@ -22,7 +22,7 @@ Este projeto é a API do sistema de gerenciamento de alunos, desenvolvida com Py
 
 ```bash
 # Clone o repositório
-git clone https://github.com/jaugustoguerra/mvp-puc-backend
+git clone https://github.com/jaugustoguerra/mvp-puc-backend.git
 cd mvp-puc-backend
 
 # Crie e ative o ambiente virtual (opcional)
