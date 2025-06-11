@@ -1,7 +1,6 @@
 openapi: 3.0.0
 info:
   title: API de Gerenciamento de Alunos
-  description: API para cadastro, listagem, busca e exclusão de alunos.
   version: "1.0"
 servers:
   - url: http://localhost:5000
@@ -25,10 +24,13 @@ paths:
                 data_nascimento:
                   type: string
                   format: date
+                cpf:
+                  type: string
               required:
                 - nome
                 - email
                 - data_nascimento
+                - cpf
       responses:
         '201':
           description: Aluno cadastrado com sucesso
@@ -56,33 +58,35 @@ paths:
                       type: string
                     data_nascimento:
                       type: string
+                    cpf:
+                      type: string
 
-  /buscar_aluno/{id}:
+  /buscar_aluno/{cpf}:
     get:
-      summary: Buscar um aluno por ID
+      summary: Buscar um aluno por CPF
       parameters:
-        - name: id
+        - name: cpf
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         '200':
           description: Dados do aluno
         '404':
           description: Aluno não encontrado
 
-  /deletar_aluno/{id}:
+  /deletar_aluno/{cpf}:
     delete:
-      summary: Deletar um aluno por ID
+      summary: Deletar um aluno por CPF
       parameters:
-        - name: id
+        - name: cpf
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         '200':
-          description: Aluno excluído com sucesso
+          description: Aluno deletado com sucesso
         '404':
           description: Aluno não encontrado
